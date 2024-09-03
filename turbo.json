@@ -13,6 +13,28 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "forge:build": {
+      "cache": false
+    },
+    "forge:test": {
+      "cache": false
+    },
+    "forge:fmt": {
+      "cache": false
+    },
+    "forge:snapshot": {
+      "cache": false
+    },
+    "anvil": {
+      "cache": false,
+      "persistent": true
+    },
+    "forge:deploy": {
+      "cache": false
+    },
+    "cast": {
+      "cache": false
     }
   }
 }

@@ -5,7 +5,14 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "forge:build": "turbo run build --filter=bounty-escrow",
+    "forge:test": "turbo run test --filter=bounty-escrow",
+    "forge:fmt": "turbo run prettier:write --filter=bounty-escrow",
+    "forge:snapshot": "turbo run test:gas --filter=bounty-escrow",
+    "anvil": "echo 'Anvil command not defined in bounty-escrow package'",
+    "forge:deploy": "echo 'Forge deploy command not defined in bounty-escrow package'",
+    "cast": "echo 'Cast command not defined in bounty-escrow package'"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
