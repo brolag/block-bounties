@@ -1,0 +1,49 @@
+{
+  "name": "bounty-escrow",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EthSign"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "clean": "forge clean && hardhat clean && rm -rf cache_hardhat",
+    "build": "forge build",
+    "build:hh": "hardhat compile",
+    "lint:sol": "forge fmt --check && solhint {script,src,test}/**/*.sol",
+    "prettier:check": "prettier --check **/*.{json,md,yml,ts} --ignore-path=.prettierignore",
+    "prettier:write": "prettier --write **/*.{json,md,yml,ts} --ignore-path=.prettierignore",
+    "test": "forge test",
+    "test:coverage": "forge coverage",
+    "test:gas": "forge test --gas-report"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ethsign/sign-protocol-evm": "1.1.1",
+    "@openzeppelin/contracts": "5.0.2",
+    "@openzeppelin/contracts-upgradeable": "5.0.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-foundry": "^1.1.2",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.2.1",
+    "@types/node": ">=16.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "dotenv": "^16.4.4",
+    "ds-test": "github:dapphub/ds-test",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "forge-std": "github:foundry-rs/forge-std#v1",
+    "hardhat": "^2.22.8",
+    "hardhat-deploy": "^0.12.4",
+    "husky": "9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.3.3",
+    "solhint": "^5.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.0.4"
+  }
+}

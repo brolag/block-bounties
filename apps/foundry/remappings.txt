@@ -1,0 +1,5 @@
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
+@ethsign/sign-protocol-evm/=node_modules/@ethsign/sign-protocol-evm/
+ds-test/=node_modules/ds-test/src
+forge-std/=node_modules/forge-std/src
