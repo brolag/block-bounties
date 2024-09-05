@@ -1,40 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
+    "lint": {},
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "forge:build": {
-      "cache": false
-    },
-    "forge:test": {
-      "cache": false
-    },
-    "forge:fmt": {
-      "cache": false
-    },
-    "forge:snapshot": {
-      "cache": false
+    "test": {
+      "outputs": []
     },
     "anvil": {
       "cache": false,
       "persistent": true
-    },
-    "forge:deploy": {
-      "cache": false
-    },
-    "cast": {
-      "cache": false
     }
   }
 }

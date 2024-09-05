@@ -10,9 +10,8 @@
     "forge:test": "turbo run test --filter=bounty-escrow",
     "forge:fmt": "turbo run prettier:write --filter=bounty-escrow",
     "forge:snapshot": "turbo run test:gas --filter=bounty-escrow",
-    "anvil": "echo 'Anvil command not defined in bounty-escrow package'",
-    "forge:deploy": "echo 'Forge deploy command not defined in bounty-escrow package'",
-    "cast": "echo 'Cast command not defined in bounty-escrow package'"
+    "forge:anvil": "turbo run anvil --filter=bounty-escrow",
+    "forge:deploy": "turbo run deploy --filter=bounty-escrow"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

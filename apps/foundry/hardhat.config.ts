@@ -30,76 +30,83 @@ const config: HardhatUserConfig = {
         ]
     },
     networks: {
+        hardhat: {
+            chainId: 31337,
+            forking: {
+                url: process.env.ALCHEMY_ETH_RPC || '',
+                blockNumber: 14390000
+            }
+        },
         mumbai: {
             url: 'https://rpc.ankr.com/polygon_mumbai',
             chainId: 80001,
             loggingEnabled: true,
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         polygon: {
             url: 'https://polygon-rpc.com',
             chainId: 137,
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         zetachainTestnet: {
             chainId: 7001,
             url: 'https://zetachain-athens-evm.blockpi.network/v1/rpc/public',
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         zetachain: {
             chainId: 7000,
             url: 'https://zetachain-evm.blockpi.network/v1/rpc/public',
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         opBnbTestnet: {
             chainId: 5611,
             url: 'https://opbnb-testnet-rpc.bnbchain.org',
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         opBnb: {
             chainId: 204,
             url: 'https://opbnb-mainnet-rpc.bnbchain.org',
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         ethereum: {
             chainId: 1,
-            url: process.env.ALCHEMY_ETH_RPC!,
-            accounts: [process.env.PRIVATE_KEY!],
+            url: process.env.ALCHEMY_ETH_RPC || '',
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         },
         baseTestnet: {
             chainId: 84532,
             url: 'https://sepolia.base.org',
-            accounts: [process.env.PRIVATE_KEY!],
+            accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
             saveDeployments: true,
             zksync: false
         }
     },
     etherscan: {
         apiKey: {
-            polygon: process.env.POLYGONSCAN_KEY!,
-            polygonMumbai: process.env.POLYGONSCAN_KEY!,
-            mantaPacific: process.env.MANTAPACIFIC_KEY!,
-            mantaPacificTestnet: process.env.MANTAPACIFIC_TEST_KEY!,
-            avax: process.env.SNOWTRACE_KEY!,
-            sepolia: process.env.ETHERSCAN_KEY!,
-            mainnet: process.env.ETHERSCAN_KEY!,
-            zetachainTestnet: process.env.ZETASCAN_API_KEY!,
-            zetachain: process.env.ZETASCAN_API_KEY!,
-            baseTestnet: process.env.BASE_SEPOLIA_API_KEY!
+            polygon: process.env.POLYGONSCAN_KEY || '',
+            polygonMumbai: process.env.POLYGONSCAN_KEY || '',
+            mantaPacific: process.env.MANTAPACIFIC_KEY || '',
+            mantaPacificTestnet: process.env.MANTAPACIFIC_TEST_KEY || '',
+            avax: process.env.SNOWTRACE_KEY || '',
+            sepolia: process.env.ETHERSCAN_KEY || '',
+            mainnet: process.env.ETHERSCAN_KEY || '',
+            zetachainTestnet: process.env.ZETASCAN_API_KEY || '',
+            zetachain: process.env.ZETASCAN_API_KEY || '',
+            baseTestnet: process.env.BASE_SEPOLIA_API_KEY || ''
         },
         customChains: [
             {
@@ -127,10 +134,6 @@ const config: HardhatUserConfig = {
                 }
             }
         ]
-    },
-    docgen: {
-        pages: 'files',
-        exclude: []
     }
 }
 
