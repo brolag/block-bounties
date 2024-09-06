@@ -2,18 +2,17 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
-import {Escrow} from "../../src/Escrow.sol";
+import {CommitmentHook} from "../../src/CommitmentHook.sol";
 
-contract DeployEscrow is Script {
+contract DeployCommitmentHook is Script {
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        Escrow escrow = new Escrow();
+        CommitmentHook commitmentHook = new CommitmentHook();
         
-        console.log("Escrow deployed to:", address(escrow));
+        console.log("CommitmentHook deployed to:", address(commitmentHook));
 
         vm.stopBroadcast();
     }
 }
-

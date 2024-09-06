@@ -3,41 +3,72 @@ pragma solidity ^0.8.26;
 
 import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
+import { Escrow } from "./Escrow.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-// Interface for our BountyEscrow contract
-interface IBountyEscrow {
-    function commitToBounty(
-        uint256 _bountyId,
-        bytes memory _projectOwnerSignature,
-        bytes memory _freelancerSignature
-    )
-        external;
-    function completeBounty(uint256 _bountyId, bytes memory _projectOwnerSignature) external;
-}
+contract CompletionHook is ISPHook, Escrow, Ownable {
+    event AttestationReceived(uint256 bountyId, address attester);
 
-// Hook for completion attestation
-abstract contract CompletionHook is ISPHook {
-    IBountyEscrow public immutable bountyEscrow;
-
-    constructor(address _bountyEscrow) {
-        bountyEscrow = IBountyEscrow(_bountyEscrow);
-    }
+    constructor() Ownable(msg.sender) {}
 
     function didReceiveAttestation(
-        address, // attester
-        uint64, // schemaId
-        uint64, // attestationId
+        address attester,
+        uint64 schemaId,
+        uint64 attestationId,
         bytes calldata extraData
     )
         external
         payable
+        override
+        onlyOwner
     {
-        // Decode extraData to get the necessary parameters
         (uint256 bountyId, bytes memory projectOwnerSignature) = abi.decode(extraData, (uint256, bytes));
-
-        // Call completeBounty in the BountyEscrow contract
-        bountyEscrow.completeBounty(bountyId, projectOwnerSignature);
+        Escrow.completeBounty(bountyId, projectOwnerSignature);
+        emit AttestationReceived(bountyId, attester);
     }
 
-    function didReceiveRevocation(address, uint64, uint64, bytes calldata) external payable { }
+    function didReceiveAttestation(
+        address attester,
+        uint64 schemaId,
+        uint64 attestationId,
+        IERC20 resolverFeeERC20Token,
+        uint256 resolverFeeERC20Amount,
+        bytes calldata extraData
+    )
+        external
+        override
+        onlyOwner
+    {
+        // Call the other didReceiveAttestation function
+        this.didReceiveAttestation(attester, schemaId, attestationId, extraData);
+    }
+
+    function didReceiveRevocation(
+        address attester,
+        uint64 schemaId,
+        uint64 attestationId,
+        bytes calldata extraData
+    )
+        external
+        override
+        payable
+        onlyOwner
+    {
+        revert("Revocation not supported");
+    }
+
+    function didReceiveRevocation(
+        address attester,
+        uint64 schemaId,
+        uint64 attestationId,
+        IERC20 resolverFeeERC20Token,
+        uint256 resolverFeeERC20Amount,
+        bytes calldata extraData
+    ) 
+        external 
+        override
+        onlyOwner 
+    {
+        revert("Revocation not supported");
+    }
 }
