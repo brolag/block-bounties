@@ -6,68 +6,59 @@ import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 import { Escrow } from "./Escrow.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CompletionHook is ISPHook, Escrow, Ownable {
+contract CompletionHook is ISPHook, Escrow {
     event AttestationReceived(uint256 bountyId, address attester);
-
-    constructor() Ownable(msg.sender) {}
-
     function didReceiveAttestation(
         address attester,
         uint64 schemaId,
-        uint64 attestationId,
+        uint64,
         bytes calldata extraData
     )
         external
         payable
         override
-        onlyOwner
     {
-        (uint256 bountyId, bytes memory projectOwnerSignature) = abi.decode(extraData, (uint256, bytes));
-        Escrow.completeBounty(bountyId, projectOwnerSignature);
-        emit AttestationReceived(bountyId, attester);
+        completeBounty(schemaId);
+        emit AttestationReceived(schemaId, attester);
     }
 
     function didReceiveAttestation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
-        IERC20 resolverFeeERC20Token,
-        uint256 resolverFeeERC20Amount,
+        address,
+        uint64,
+        uint64,
+        IERC20,
+        uint256,
         bytes calldata extraData
     )
         external
         override
-        onlyOwner
     {
-        // Call the other didReceiveAttestation function
-        this.didReceiveAttestation(attester, schemaId, attestationId, extraData);
+        revert("ERC20 fee not supported");
     }
 
     function didReceiveRevocation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
+        address,
+        uint64,
+        uint64,
         bytes calldata extraData
     )
         external
         override
         payable
-        onlyOwner
     {
         revert("Revocation not supported");
     }
 
     function didReceiveRevocation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
-        IERC20 resolverFeeERC20Token,
-        uint256 resolverFeeERC20Amount,
+        address,
+        uint64,
+        uint64,
+        IERC20,
+        uint256,
         bytes calldata extraData
     ) 
         external 
         override
-        onlyOwner 
     {
         revert("Revocation not supported");
     }

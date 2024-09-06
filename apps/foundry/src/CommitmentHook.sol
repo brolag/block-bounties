@@ -6,72 +6,56 @@ import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 import { Escrow } from "./Escrow.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-// Hook for commitment attestation
-contract CommitmentHook is ISPHook, Escrow, Ownable {
-    constructor() Ownable(msg.sender) {}
-
+contract CommitmentHook is ISPHook, Escrow {
     function didReceiveAttestation(
         address attester,
         uint64 schemaId,
-        uint64 attestationId,
+        uint64,
         bytes calldata extraData
     )
-        payable
         external
-        override
-        onlyOwner
+        payable
     {
-        // Existing implementation
-        (uint256 bountyId, bytes memory projectOwnerSignature) =
-            abi.decode(extraData, (uint256, bytes));
-        commitToBounty(bountyId, projectOwnerSignature);
+        commitToBounty(schemaId, attester);
     }
 
     function didReceiveAttestation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
-        IERC20 resolverFeeERC20Token,
-        uint256 resolverFeeERC20Amount,
-        bytes calldata extraData
+        address,
+        uint64,
+        uint64,
+        IERC20,
+        uint256,
+        bytes calldata 
     )
         external
-        override
-        onlyOwner
+        view
     {
-        // Implement logic here if needed
-        // For now, just call the other didReceiveAttestation function
-        this.didReceiveAttestation(attester, schemaId, attestationId, extraData);
+        revert("ERC20 fee not supported");
     }
 
     function didReceiveRevocation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
-        bytes calldata extraData
+        address,
+        uint64, 
+        uint64, 
+        bytes calldata 
     )
         external
-        override
         payable
-        onlyOwner
     {
-        // Implement revocation logic here
-        revert("Revocation not supported");
+       revert("Revocation not supported");
     }
 
     function didReceiveRevocation(
-        address attester,
-        uint64 schemaId,
-        uint64 attestationId,
-        IERC20 resolverFeeERC20Token,
-        uint256 resolverFeeERC20Amount,
-        bytes calldata extraData
-    ) 
-        external 
-        override
-        onlyOwner 
+        address,
+        uint64, 
+        uint64, 
+        IERC20, 
+        uint256, 
+        bytes calldata
+    )
+        external
+        view
     {
-        // Implement revocation logic here
         revert("Revocation not supported");
     }
 }
