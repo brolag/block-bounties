@@ -6,7 +6,14 @@ import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 import { Escrow } from "./Escrow.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CompletionHook is ISPHook, Escrow {
+contract CompletionHook is ISPHook {
+    Escrow public escrow;
+
+    constructor(address payable _escrow) {
+        escrow = Escrow(_escrow);
+    }
+
+
     function didReceiveAttestation(
         address,
         uint64 schemaId,
@@ -17,7 +24,7 @@ contract CompletionHook is ISPHook, Escrow {
         payable
         override
     {
-        completeBounty(uint64(schemaId));
+        escrow.completeBounty(uint64(schemaId));
     }
 
     function didReceiveAttestation(
