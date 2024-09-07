@@ -2,6 +2,9 @@
 import {ethers} from 'hardhat'
 
 async function main() {
+    const [deployer] = await ethers.getSigners();
+    console.log("Deploying contracts with the account:", deployer.address);
+
     // Deploy Escrow contract
     const EscrowFactory = await ethers.getContractFactory('Escrow')
     const escrowInstance = await EscrowFactory.deploy()

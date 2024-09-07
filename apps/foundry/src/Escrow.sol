@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-contract Escrow {
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
+import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
+
+contract Escrow is Ownable {
     struct Bounty {
         address funder;
         address beneficiary;
@@ -18,46 +22,42 @@ contract Escrow {
     event BountyCommitted(uint256 indexed bountyId, address beneficiary);
     event BountyReleased(uint256 indexed bountyId, address beneficiary, uint256 amount);
 
-    function createBounty() external payable returns (uint256) {
-        require(msg.value > 0, "Funding amount must be greater than 0");
+    mapping(address attester => bool allowed) public whitelist;
 
-        uint256 bountyId = nextBountyId++;
-        Bounty storage bounty = bounties[bountyId];
-        bounty.funder = msg.sender;
-        bounty.amount = msg.value;
-        bounty.isFunded = true;
+    error UnauthorizedAttester();
 
-        emit BountyCreated(bountyId, msg.sender, msg.value);
-        return bountyId;
+    constructor() Ownable(_msgSender()) { }
+
+    function createBounty() public payable {
+        bounties[nextBountyId] = Bounty({
+            funder: msg.sender,
+            beneficiary: address(0),
+            amount: msg.value,
+            isFunded: msg.value > 0,
+            isReleased: false,
+            isCommitted: false
+        });
+
+        emit BountyCreated(nextBountyId, msg.sender, msg.value);
+        nextBountyId++;
     }
 
-    function commitToBounty(
-        uint256 _bountyId,
-        address _beneficiary,
-        bytes memory _projectOwnerSignature,
-        bytes memory _freelancerSignature
-    )
-        external
-    {
+    function commitToBounty(uint64 _bountyId, address _beneficiary) public  {
         Bounty storage bounty = bounties[_bountyId];
         require(bounty.isFunded, "Bounty is not funded");
         require(!bounty.isCommitted, "Bounty is already committed");
 
-        // TODO: Implement signature verification logic here
-
         bounty.beneficiary = _beneficiary;
         bounty.isCommitted = true;
 
-        emit BountyCommitted(_bountyId, _beneficiary);
+        emit BountyCommitted(_bountyId, msg.sender);
     }
 
-    function completeBounty(uint256 _bountyId, bytes memory _projectOwnerSignature) external {
+    function completeBounty(uint64 _bountyId) public onlyFunder(_bountyId) {
         Bounty storage bounty = bounties[_bountyId];
         require(bounty.isFunded, "Bounty is not funded");
         require(bounty.isCommitted, "Bounty is not committed");
         require(!bounty.isReleased, "Bounty has already been released");
-
-        // TODO: Implement signature verification logic here
 
         bounty.isReleased = true;
         payable(bounty.beneficiary).transfer(bounty.amount);
@@ -72,4 +72,11 @@ contract Escrow {
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
+
+    modifier onlyFunder(uint256 _bountyId) {
+        require(msg.sender == bounties[_bountyId].funder, "Not the funder");
+        _;
+    }
+
+    receive() external payable {}
 }

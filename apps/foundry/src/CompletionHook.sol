@@ -3,41 +3,63 @@ pragma solidity ^0.8.26;
 
 import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
+import { Escrow } from "./Escrow.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
-// Interface for our BountyEscrow contract
-interface IBountyEscrow {
-    function commitToBounty(
-        uint256 _bountyId,
-        bytes memory _projectOwnerSignature,
-        bytes memory _freelancerSignature
-    )
-        external;
-    function completeBounty(uint256 _bountyId, bytes memory _projectOwnerSignature) external;
-}
-
-// Hook for completion attestation
-abstract contract CompletionHook is ISPHook {
-    IBountyEscrow public immutable bountyEscrow;
-
-    constructor(address _bountyEscrow) {
-        bountyEscrow = IBountyEscrow(_bountyEscrow);
-    }
-
+contract CompletionHook is ISPHook, Escrow {
     function didReceiveAttestation(
-        address, // attester
-        uint64, // schemaId
-        uint64, // attestationId
-        bytes calldata extraData
+        address,
+        uint64 schemaId,
+        uint64,
+        bytes calldata
     )
         external
         payable
+        override
     {
-        // Decode extraData to get the necessary parameters
-        (uint256 bountyId, bytes memory projectOwnerSignature) = abi.decode(extraData, (uint256, bytes));
-
-        // Call completeBounty in the BountyEscrow contract
-        bountyEscrow.completeBounty(bountyId, projectOwnerSignature);
+        completeBounty(uint64(schemaId));
     }
 
-    function didReceiveRevocation(address, uint64, uint64, bytes calldata) external payable { }
+    function didReceiveAttestation(
+        address,
+        uint64,
+        uint64,
+        IERC20,
+        uint256,
+        bytes calldata
+    )
+        external
+        pure
+        override
+    {
+        revert("ERC20 fee not supported");
+    }
+
+    function didReceiveRevocation(
+        address,
+        uint64,
+        uint64,
+        bytes calldata
+    )
+        external
+        payable
+        override
+    {
+        revert("Revocation not supported");
+    }
+
+    function didReceiveRevocation(
+        address,
+        uint64,
+        uint64,
+        IERC20,
+        uint256,
+        bytes calldata
+    ) 
+        external 
+        pure
+        override
+    {
+        revert("Revocation not supported");
+    }
 }
