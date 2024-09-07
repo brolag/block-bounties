@@ -11,7 +11,7 @@ contract CommitmentHook is ISPHook, Escrow {
         address attester,
         uint64 schemaId,
         uint64,
-        bytes calldata extraData
+        bytes calldata
     )
         external
         payable
@@ -28,7 +28,7 @@ contract CommitmentHook is ISPHook, Escrow {
         bytes calldata 
     )
         external
-        view
+        pure
     {
         revert("ERC20 fee not supported");
     }
@@ -54,7 +54,7 @@ contract CommitmentHook is ISPHook, Escrow {
         bytes calldata
     )
         external
-        view
+        pure
     {
         revert("Revocation not supported");
     }

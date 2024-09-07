@@ -7,19 +7,17 @@ import { Escrow } from "./Escrow.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CompletionHook is ISPHook, Escrow {
-    event AttestationReceived(uint256 bountyId, address attester);
     function didReceiveAttestation(
-        address attester,
+        address,
         uint64 schemaId,
         uint64,
-        bytes calldata extraData
+        bytes calldata
     )
         external
         payable
         override
     {
-        completeBounty(schemaId);
-        emit AttestationReceived(schemaId, attester);
+        completeBounty(uint64(schemaId));
     }
 
     function didReceiveAttestation(
@@ -28,9 +26,10 @@ contract CompletionHook is ISPHook, Escrow {
         uint64,
         IERC20,
         uint256,
-        bytes calldata extraData
+        bytes calldata
     )
         external
+        pure
         override
     {
         revert("ERC20 fee not supported");
@@ -40,11 +39,11 @@ contract CompletionHook is ISPHook, Escrow {
         address,
         uint64,
         uint64,
-        bytes calldata extraData
+        bytes calldata
     )
         external
-        override
         payable
+        override
     {
         revert("Revocation not supported");
     }
@@ -55,9 +54,10 @@ contract CompletionHook is ISPHook, Escrow {
         uint64,
         IERC20,
         uint256,
-        bytes calldata extraData
+        bytes calldata
     ) 
         external 
+        pure
         override
     {
         revert("Revocation not supported");
