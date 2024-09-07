@@ -1,0 +1,39 @@
+.navbar {
+    background-color: transparent;
+  }
+  
+  .container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffff;
+    text-decoration: none;
+  }
+  
+  .button {
+    background-color: transparent;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  
+  .button:hover {
+    background-color: #0e2b69;
+  }

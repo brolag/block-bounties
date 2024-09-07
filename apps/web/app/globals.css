@@ -1,5 +1,6 @@
+
 :root {
-  --background: #ffffff;
+  --background: #0A0D40;
   --foreground: #171717;
 }
 
@@ -12,8 +13,10 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 body {
@@ -27,13 +30,13 @@ body {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.layout-container {
+  display: flex;
+  min-height: calc(100vh - 4rem); /* Ajusta esto según la altura de tu Navbar */
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.main-content {
+  flex-grow: 1;
 }
+
+
