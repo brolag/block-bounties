@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from './bountyForm.module.css';
+import { ethers } from 'ethers';
+import { EscrowAddress, EscrowABI } from '../../contracts/Escrow';
 
 interface BountyData {
   bountyName: string;
@@ -21,6 +23,44 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
     amount: '',
     deadline: '',
   });
+  const [isConnected, setIsConnected] = useState(false);
+  const [signer, setSigner] = useState<ethers.Signer | null>(null);
+
+  // TODO: replace this with the actual wallet connection logic
+  const connectWallet = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        setSigner(signer);
+        setIsConnected(true);
+      } catch (error) {
+        console.error('Failed to connect wallet:', error);
+      }
+    } else {
+      console.error('Metamask is not installed');
+    }
+  };
+
+  // TODO: add the integration with the data base here.
+  const createBounty = async () => {
+    if (!signer) {
+      console.error('Wallet not connected');
+      return;
+    }
+
+    try {
+      const escrowContract = new ethers.Contract(EscrowAddress, EscrowABI, signer);
+      const amountInWei = ethers.parseEther(bountyData.amount);
+      
+      const tx = await escrowContract.createBounty({ value: amountInWei });
+      await tx.wait();
+      console.log('Bounty created successfully');
+    } catch (error) {
+      console.error('Error creating bounty:', error);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,8 +70,9 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await createBounty();
     onSubmit(bountyData);
   };
 
@@ -39,6 +80,11 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
     <div className={styles.formContainer}>
       <div className={styles.formWrapper}>
         <h2 className={styles.formTitle}>Create a New Bounty</h2>
+        {!isConnected && (
+          <button type="button" onClick={connectWallet} className={styles.connectButton}>
+            Connect Wallet
+          </button>
+        )}
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label className={styles.label}>
@@ -104,7 +150,7 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>
+          <button type="submit" className={styles.submitButton} disabled={!isConnected}>
             Create Bounty
           </button>
         </form>
