@@ -66,6 +66,84 @@ contract EscrowTest is Test {
         assertTrue(bounty.isCommitted);
     }
 
+    function testCompleteBounty() public {
+        uint256 bountyAmount = 1 ether;
+        uint64 bountyId = 0;
+
+        // Create and commit to a bounty
+        vm.prank(funder);
+        escrow.createBounty{value: bountyAmount}();
+        vm.prank(beneficiary);
+        escrow.commitToBounty(bountyId, beneficiary);
+
+        uint256 initialBalance = beneficiary.balance;
+
+        // Expect BountyReleased event
+        vm.expectEmit(true, true, false, true);
+        emit BountyReleased(bountyId, beneficiary, bountyAmount);
+
+        // Complete the bounty
+        vm.prank(funder);
+        escrow.completeBounty(bountyId);
+
+        Escrow.Bounty memory bounty = escrow.getBounty(bountyId);
+
+        assertTrue(bounty.isReleased);
+        assertEq(beneficiary.balance, initialBalance + bountyAmount);
+    }
+
+    function testFailCompleteBountyNotFunder() public {
+        uint256 bountyAmount = 1 ether;
+        uint64 bountyId = 0;
+
+        // Create and commit to a bounty
+        vm.prank(funder);
+        escrow.createBounty{value: bountyAmount}();
+        vm.prank(beneficiary);
+        escrow.commitToBounty(bountyId, beneficiary);
+
+        // Try to complete the bounty as non-funder (should fail)
+        vm.prank(beneficiary);
+        escrow.completeBounty(bountyId);
+    }
+
+    function testFailCommitToNonExistentBounty() public {
+        uint64 nonExistentBountyId = 999;
+
+        vm.prank(beneficiary);
+        escrow.commitToBounty(nonExistentBountyId, beneficiary);
+    }
+
+    function testFailDoubleCommit() public {
+        uint256 bountyAmount = 1 ether;
+        uint64 bountyId = 0;
+
+        // Create a bounty
+        vm.prank(funder);
+        escrow.createBounty{value: bountyAmount}();
+
+        // First commit
+        vm.prank(beneficiary);
+        escrow.commitToBounty(bountyId, beneficiary);
+
+        // Second commit (should fail)
+        vm.prank(address(0x3));
+        escrow.commitToBounty(bountyId, address(0x3));
+    }
+
+    function testFailCompleteUncommittedBounty() public {
+        uint256 bountyAmount = 1 ether;
+        uint64 bountyId = 0;
+
+        // Create a bounty without committing
+        vm.prank(funder);
+        escrow.createBounty{value: bountyAmount}();
+
+        // Try to complete the uncommitted bounty
+        vm.prank(funder);
+        escrow.completeBounty(bountyId);
+    }
+
 
     receive() external payable {}
 }
