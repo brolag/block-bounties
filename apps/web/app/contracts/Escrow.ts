@@ -1,6 +1,5 @@
 export const EscrowAddress = "0x201195dead02079a4c71595887d4caa85b02a21b";
 
-
 export const EscrowABI = [
   {
     "inputs": [],
