@@ -1,0 +1,24 @@
+.sidebar {
+    width: 16rem;
+    background-color: #ffff;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 4rem;
+    border-right: 1px solid #4e0dc7;
+  }
+  
+  .menu {
+    padding: 1rem 0;
+  }
+  
+  .menuItem {
+    display: block;
+    padding: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menuItem:hover {
+    background-color: #8b8aec;
+  }
