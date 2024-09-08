@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import styles from './bountyForm.module.css';
+import { useState } from 'react';
 import { ethers } from 'ethers';
 import { EscrowAddress, EscrowABI } from '../../contracts/Escrow';
 
@@ -30,24 +29,6 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
 
-  // TODO: replace this with the actual wallet connection logic
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        setSigner(signer);        
-        setIsConnected(true);
-      } catch (error) {
-        console.error('Failed to connect wallet:', error);
-      }
-    } else {
-      console.error('Metamask is not installed');
-    }
-  };
-
-  // TODO: add the integration with the data base here.
   const createBounty = async () => {
     if (!signer) {
       console.error('Wallet not connected');
@@ -92,21 +73,17 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.formWrapper}>
-        <h2 className={styles.formTitle}>Create a New Bounty</h2>
-        {!isConnected && (
-          <button type="button" onClick={connectWallet} className={styles.connectButton}>
-            Connect Wallet
-          </button>
-        )}
+    <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-4">
+      <div className="p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Create a New Bounty</h2>
         <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bountyName">
               Bounty Name
             </label>
             <input
-              className={styles.input}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="bountyName"
               type="text"
               name="bountyName"
               value={bountyData.bountyName}
@@ -114,12 +91,13 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
               placeholder="Enter bounty name"
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
               Description
             </label>
             <textarea
-              className={styles.textarea}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="description"
               name="description"
               value={bountyData.description}
               onChange={handleChange}
@@ -127,12 +105,13 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
               rows={3}
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="freelancer">
               Freelancer (Wallet Address)
             </label>
             <input
-              className={styles.input}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="freelancer"
               type="text"
               name="freelancer"
               value={bountyData.freelancer}
@@ -140,12 +119,13 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
               placeholder="Enter freelancer's wallet address"
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
               Amount (ETH)
             </label>
             <input
-              className={styles.input}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="amount"
               type="number"
               name="amount"
               value={bountyData.amount}
@@ -153,19 +133,24 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
               placeholder="Enter amount in ETH"
             />
           </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deadline">
               Deadline
             </label>
             <input
-              className={styles.input}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="deadline"
               type="datetime-local"
               name="deadline"
               value={bountyData.deadline}
               onChange={handleChange}
             />
           </div>
-          <button type="submit" className={styles.submitButton} disabled={!isConnected}>
+          <button 
+            type="submit" 
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            disabled={!isConnected}
+          >
             Create Bounty
           </button>
         </form>

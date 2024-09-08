@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { ethers } from "ethers";
-import styles from './page.module.css';
 
-const clientId = "BOgvX3VW76C4HUpjlCkJo59IoddKxgRPyoCa7OJycF5Jy4nul71ODv_c5uGz24UePY8eVu7GNj0W5iLjF50FvEk"; // Reemplaza con tu Client ID de Web3Auth
+const clientId = "BOgvX3VW76C4HUpjlCkJo59IoddKxgRPyoCa7OJycF5Jy4nul71ODv_c5uGz24UePY8eVu7GNj0W5iLjF50FvEk";
 
-const AuthButton: React.FC = () => {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [address, setAddress] = useState<string>("");
+const Web3AuthContext = createContext(null);
+
+export const Web3AuthProvider = ({ children }) => {
+  const [web3auth, setWeb3auth] = useState(null);
+  const [address, setAddress] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -21,8 +22,13 @@ const AuthButton: React.FC = () => {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0xaa36a7", // Goerli testnet
-          rpcTarget: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+          chainId: "0x14A34",
+          rpcTarget: "https://sepolia.base.org",
+          displayName: "Base Sepolia",
+          blockExplorerUrl: "https://sepolia-explorer.base.org",
+          ticker: "ETH",
+          tickerName: "ETH",
+          logo: "https://github.com/base-org/brand-kit/blob/main/logo/symbol/Base_Symbol_Blue.svg",
         };
 
         const web3auth = new Web3Auth({
@@ -34,7 +40,7 @@ const AuthButton: React.FC = () => {
 
         const metamaskAdapter = new MetamaskAdapter({
           clientId,
-          sessionTime: 3600, // 1 hour in seconds
+          sessionTime: 3600,
           web3AuthNetwork: "testnet",
           chainConfig,
         });
@@ -61,7 +67,6 @@ const AuthButton: React.FC = () => {
       const signer = await ethersProvider.getSigner();
       const address = await signer.getAddress();
       setAddress(address);
-      router.push('/create-bounty');
     }
   };
 
@@ -76,23 +81,16 @@ const AuthButton: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      {!address ? (
-        <button onClick={login} className={styles.button}>
-          Login with MetaMask
-        </button>
-      ) : (
-        <div className={styles.userInfo}>
-          <span className={styles.address}>
-            {address.slice(0, 6)}...{address.slice(-4)}
-          </span>
-          <button onClick={logout} className={`${styles.button} ${styles.logoutButton}`}>
-            Logout
-          </button>
-        </div>
-      )}
-    </div>
+    <Web3AuthContext.Provider value={{ web3auth, address, login, logout }}>
+      {children}
+    </Web3AuthContext.Provider>
   );
 };
 
-export default AuthButton;
+export const useWeb3Auth = () => {
+  const context = useContext(Web3AuthContext);
+  if (context === undefined) {
+    throw new Error('useWeb3Auth must be used within a Web3AuthProvider');
+  }
+  return context;
+};
