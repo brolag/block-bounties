@@ -1,23 +1,48 @@
+'use client'
+
+import { useEffect, useState } from 'react';
 import { BountiesHistoryList } from './bountiesHistoryList';
 import styles from "./bountiesHistoryList.module.css"
 
-// Esta es una función asíncrona que obtendría los bounties finalizados
-async function getCompletedBounties() {
-  // Aquí iría la lógica para obtener los bounties finalizados desde tu API o base de datos
-  // Por ahora, retornamos datos de ejemplo
-  return [
-    { id: 1, bountyName: "Desarrollo Frontend", status: "completado", description: "Implementar la interfaz de usuario del dashboard", creator: "0x1234...5678", freelancer: "0xabcd...efgh", amount: 2.5, completedDate: new Date("2023-11-15") },
-    { id: 2, bountyName: "Auditoría de Smart Contract", status: "completado", description: "Realizar una auditoría completa del smart contract principal", creator: "0x9876...5432", freelancer: "0xijkl...mnop", amount: 5.0, completedDate: new Date("2023-10-30") },
-    // Añade más bounties completados según sea necesario
-  ];
+async function fetchBounties() {
+  const creator = "0x1F658AF12F5a0D72e4652f53399e556B9dB23904";
+
+  try {
+    const response = await fetch(`../api/bounty-history?creator=${creator}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log('Datos obtenidos:', result.data);
+
+    return result.data;
+  } catch (error) {
+    console.error('Error al consultar los datos:', error);
+    return null;
+  }
 }
 
-export default async function BountiesHistoryPage() {
-  const completedBounties = await getCompletedBounties();
+export default function BountiesHistoryPage() {
+  const [completedBounties, setCompletedBounties] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchBounties();
+      setCompletedBounties(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.main}>
-      <BountiesHistoryList bounties={completedBounties} />
+      <BountiesHistoryList bounties={completedBounties || []} />
     </div>
   );
 }

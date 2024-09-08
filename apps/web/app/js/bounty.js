@@ -1,4 +1,4 @@
-const { selectId, insertBounty, updateAttestationId, selectBountyFreelancer, selectBountyBusiness, acceptBounty } = require('./tableland');
+const { selectId, insertBounty, updateAttestationId, selectBountyFreelancer, selectBountyBusiness, acceptBounty, selectCompletedBountyBusiness } = require('./tableland');
 const { createCommitmentAttestation, createFinalizationAttestation } = require('./signProtocol');
 
 //creation of the bounty and the attestation commitment
@@ -55,7 +55,27 @@ async function selectAllBountyFreelancer(freelancer){
 //select all the bounties of the business
 async function selectAllBountyBusiness(creator){
 
-  const result = await selectBountyBusiness(creator);
+  const result = await selectBountyBusiness(creator, "In progress");
+  
+  //update the deadline format
+  const updatedResult = result.map(bounty => {    
+    const deadlineDate = new Date(bounty.deadline);
+    const formattedDeadline = `${deadlineDate.getMonth() + 1}/${deadlineDate.getDate()}/${deadlineDate.getFullYear()}`;
+
+    return {
+      ...bounty,
+      deadline: formattedDeadline 
+    };
+  });
+
+  return updatedResult;
+
+}
+
+//select all the bounties of the business
+async function selectAllCompletedBountyBusiness(creator){
+
+  const result = await selectCompletedBountyBusiness(creator, "Completed");
   
   //update the deadline format
   const updatedResult = result.map(bounty => {    
@@ -90,5 +110,6 @@ module.exports = {
   create_Bounty,
   selectAllBountyFreelancer,
   selectAllBountyBusiness,
+  selectAllCompletedBountyBusiness,
   finalizeBounty
 };
