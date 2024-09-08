@@ -12,7 +12,9 @@ export default function Dashboard() {
     const updatedBountyData = {
       ...bountyData,
       bountyId: storedBountyId,  // Sobrescribe bountyId con el valor de localStorage
-    };      
+    };
+
+    console.log(updatedBountyData);
     
     try {
       const response = await fetch('../api/create', {

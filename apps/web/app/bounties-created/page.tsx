@@ -1,23 +1,48 @@
+'use client'
+
+import { useEffect, useState } from 'react';
 import { BountiesCreatedList } from './bountiesCreatedList';
 import styles from "./bountiesCreatedList.module.css"
 
-// Esta es una función asíncrona que podría obtener los datos de los bounties
-async function getBounties() {
-  // Aquí iría la lógica para obtener los bounties desde tu API o base de datos
-  // Por ahora, retornamos datos de ejemplo
-  return [
-    { id: 1, bountyName: "Proyecto A", status: "activo", description: "Descripción del proyecto A", freelancer: "0x1234...5678", amount: 1.5, deadline: new Date("2023-12-31") },
-    { id: 2, bountyName: "Proyecto B", status: "inactivo", description: "Descripción del proyecto B", freelancer: "0xabcd...efgh", amount: 2.0, deadline: new Date("2024-01-15") },
-    // Añade más bounties según sea necesario
-  ];
+async function fetchBounties() {
+  const creator = "0x1F658AF12F5a0D72e4652f53399e556B9dB23904";
+
+  try {
+    const response = await fetch(`../api/bounty-created?creator=${creator}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log('Datos obtenidos:', result.data);
+
+    return result.data;
+  } catch (error) {
+    console.error('Error al consultar los datos:', error);
+    return null;
+  }
 }
 
-export default async function BountiesCreatedPage() {
-  const bounties = await getBounties();
+export default function BountiesCreatedPage() {
+  const [bounties, setBounties] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchBounties();
+      setBounties(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.main}>
-      <BountiesCreatedList bounties={bounties} />
+      <BountiesCreatedList bounties={bounties || []} />
     </div>
   );
 }

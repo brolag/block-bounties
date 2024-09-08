@@ -4,13 +4,13 @@ import React from 'react';
 import styles from './bountiesCreatedList.module.css';
 
 interface Bounty {
-  id: number;
+  bountyId: number;
   bountyName: string;
   status: string;
   description: string;
   freelancer: string;
   amount: number;
-  deadline: Date;
+  deadline: string;
 }
 
 interface BountiesCreatedListProps {
@@ -21,7 +21,7 @@ export const BountiesCreatedList: React.FC<BountiesCreatedListProps> = ({ bounti
   return (
     <div className={styles.grid}>
       {bounties.map((bounty) => (
-        <div key={bounty.id} className={styles.card}>
+        <div key={bounty.bountyId} className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>{bounty.bountyName}</h3>
             <span className={`${styles.badge} ${bounty.status === 'activo' ? styles.badgeActive : styles.badgeInactive}`}>
@@ -37,12 +37,12 @@ export const BountiesCreatedList: React.FC<BountiesCreatedListProps> = ({ bounti
                   <td>{bounty.freelancer.slice(0, 6)}...{bounty.freelancer.slice(-4)}</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Cantidad</td>
+                  <td className={styles.label}>Amount</td>
                   <td>{bounty.amount} ETH</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Fecha límite</td>
-                  <td>{bounty.deadline.toLocaleDateString()}</td>
+                  <td className={styles.label}>Deadline</td>
+                  <td>{bounty.deadline}</td>
                 </tr>
               </tbody>
             </table>

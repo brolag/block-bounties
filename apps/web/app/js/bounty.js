@@ -7,7 +7,7 @@ async function create_Bounty(
     bountyName,                     // The name of the bounty
     description,                    // Description of the bounty
     amount,                         // The amount of the bounty
-    attestor = "0x1F658AF12F5a0D72e4652f53399e556B9dB23904",                       // The creator/attestor of the bounty
+    attestor,                       // The creator/attestor of the bounty
     freelancer,                     // The freelancer assigned to the bounty
     deadline                       // The deadline for the bounty
   ) {
@@ -36,8 +36,19 @@ async function create_Bounty(
 async function selectAllBountyFreelancer(freelancer){
 
   const result = await selectBountyFreelancer(freelancer);
-  //console.log(result);
-  return result;
+  
+  //update the deadline format
+  const updatedResult = result.map(bounty => {    
+    const deadlineDate = new Date(bounty.deadline);
+    const formattedDeadline = `${deadlineDate.getMonth() + 1}/${deadlineDate.getDate()}/${deadlineDate.getFullYear()}`;
+
+    return {
+      ...bounty,
+      deadline: formattedDeadline 
+    };
+  });
+
+  return updatedResult;
 
 }
 
@@ -45,8 +56,19 @@ async function selectAllBountyFreelancer(freelancer){
 async function selectAllBountyBusiness(creator){
 
   const result = await selectBountyBusiness(creator);
-  //console.log(result);
-  return result;
+  
+  //update the deadline format
+  const updatedResult = result.map(bounty => {    
+    const deadlineDate = new Date(bounty.deadline);
+    const formattedDeadline = `${deadlineDate.getMonth() + 1}/${deadlineDate.getDate()}/${deadlineDate.getFullYear()}`;
+
+    return {
+      ...bounty,
+      deadline: formattedDeadline 
+    };
+  });
+
+  return updatedResult;
 
 }
 

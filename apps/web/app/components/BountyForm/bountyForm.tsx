@@ -10,6 +10,7 @@ interface BountyData {
   freelancer: string;
   amount: string;
   deadline: string;
+  attestor: string;
 }
 
 interface BountyFormProps {
@@ -24,6 +25,7 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
     freelancer: '',
     amount: '',
     deadline: '',
+    attestor: '',
   });
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
@@ -35,7 +37,7 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
-        setSigner(signer);
+        setSigner(signer);        
         setIsConnected(true);
       } catch (error) {
         console.error('Failed to connect wallet:', error);
@@ -60,11 +62,14 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
       await tx.wait();
       const nextBountyId = await escrowContract.nextBountyId();
       const bountyIdAsNumber = Number(nextBountyId) - 1;
+      const attestor = await signer.getAddress();
       localStorage.setItem('bountyId', bountyIdAsNumber.toString());
       setBountyData(prevData => ({
         ...prevData,
-        bountyId: bountyIdAsNumber
+        bountyId: bountyIdAsNumber,
+        attestor: attestor
       }));
+      console.log(attestor);
 
       console.log('Bounty created successfully');
     } catch (error) {

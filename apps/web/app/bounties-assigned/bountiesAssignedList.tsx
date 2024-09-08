@@ -4,13 +4,13 @@ import React from 'react';
 import styles from './bountiesAssignedList.module.css';
 
 interface AssignedBounty {
-  id: number;
+  bountyId: number;
   bountyName: string;
   status: string;
   description: string;
   creator: string;
   amount: number;
-  deadline: Date;
+  deadline: string;
 }
 
 interface BountiesAssignedListProps {
@@ -21,7 +21,7 @@ export const BountiesAssignedList: React.FC<BountiesAssignedListProps> = ({ boun
   return (
     <div className={styles.grid}>
       {bounties.map((bounty) => (
-        <div key={bounty.id} className={styles.card}>
+        <div key={bounty.bountyId} className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>{bounty.bountyName}</h3>
             <span className={`${styles.badge} ${getStatusStyle(bounty.status)}`}>
@@ -33,16 +33,16 @@ export const BountiesAssignedList: React.FC<BountiesAssignedListProps> = ({ boun
             <table className={styles.table}>
               <tbody>
                 <tr>
-                  <td className={styles.label}>Creador</td>
+                  <td className={styles.label}>Creator</td>
                   <td>{bounty.creator.slice(0, 6)}...{bounty.creator.slice(-4)}</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Cantidad</td>
+                  <td className={styles.label}>Amount</td>
                   <td>{bounty.amount} ETH</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Fecha límite</td>
-                  <td>{bounty.deadline.toLocaleDateString()}</td>
+                  <td className={styles.label}>Deadline</td>
+                  <td>{bounty.deadline}</td>
                 </tr>
               </tbody>
             </table>
@@ -55,11 +55,11 @@ export const BountiesAssignedList: React.FC<BountiesAssignedListProps> = ({ boun
 
 function getStatusStyle(status: string): string {
   switch (status.toLowerCase()) {
-    case 'en progreso':
+    case 'in progress':
       return styles.badgeInProgress || '';
-    case 'pendiente':
+    case 'pending':
       return styles.badgePending || '';
-    case 'completado':
+    case 'completed':
       return styles.badgeCompleted || '';
     default:
       return styles.badgeDefault || '';
