@@ -1,14 +1,16 @@
-# Turborepo starter
+# BlockBounties 🖥️
 
-This is an official starter Turborepo.
+BlockBounties is a decentralized platform for secure, trustless agreements. Using attestations, smart contracts, and decentralized storage, it automates payments for any project needing escrow—from bug bounties to milestone-based collaborations. Trust made easy on-chain!
 
-## Using this example
 
-Run the following command:
+## Tech Stack
 
-```sh
-npx create-turbo@latest
-```
+- **Blockchain**: Base
+- **Smart Contracts**: Solidity, Foundry, Hardhat
+- **Frontend**: TypeScript, Next.js, ethers.js
+- **Decentralized Storage**: Tableland
+- **Authentication**: Web3Auth
+- **Attestations**: SignProtocol
 
 ## What's inside?
 
@@ -82,6 +84,6 @@ Learn more about the power of Turborepo:
 
 Contracts
 
-- Escrow: 0x5FbDB2315678afecb367f032d93F642f64180aa3
-- CommitmentHook: 0xA486118610CfAF9ca28d207F841062363C6AF804
-- CompletionHook: 0xA486118610CfAF9ca28d207F841062363C6AF804
+- Escrow: [0x5FbDB2315678afecb367f032d93F642f64180aa3](https://sepolia.basescan.org/address/0x5FbDB2315678afecb367f032d93F642f64180aa3)
+- CommitmentHook: [0xA486118610CfAF9ca28d207F841062363C6AF804](https://sepolia.basescan.org/address/0xA486118610CfAF9ca28d207F841062363C6AF804)
+- CompletionHook: [0xA486118610CfAF9ca28d207F841062363C6AF804](https://sepolia.basescan.org/address/0xA486118610CfAF9ca28d207F841062363C6AF804)
