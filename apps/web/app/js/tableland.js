@@ -90,12 +90,24 @@ async function selectBountyFreelancer(freelancer){
 }
 
 //select all the bounties of the business
-async function selectBountyBusiness(creator){
-  const query = `SELECT * FROM ${tableName} WHERE (creator) = (?) ORDER BY bountyId DESC`;
+async function selectBountyBusiness(creator, status){
+  const query = `SELECT * FROM ${tableName} WHERE (creator) = (?) AND (status) = (?) ORDER BY bountyId DESC`;
 
   const result = await db
     .prepare(query)
-    .bind(creator)
+    .bind(creator, status)
+    .all();
+
+  return result.results;
+}
+
+//select all the completed bounties of the business
+async function selectCompletedBountyBusiness(creator, status){
+  const query = `SELECT * FROM ${tableName} WHERE (creator) = (?) AND (status) = (?) ORDER BY bountyId DESC`;
+
+  const result = await db
+    .prepare(query)
+    .bind(creator, status)
     .all();
 
   return result.results;
@@ -119,5 +131,6 @@ module.exports = {
   updateAttestationId,
   selectBountyFreelancer,
   selectBountyBusiness,
+  selectCompletedBountyBusiness,
   acceptBounty
 };

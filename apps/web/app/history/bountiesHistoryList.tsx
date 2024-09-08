@@ -11,7 +11,7 @@ interface CompletedBounty {
   creator: string;
   freelancer: string;
   amount: number;
-  completedDate: Date;
+  completedDate: string;
 }
 
 interface BountiesHistoryListProps {
@@ -34,7 +34,7 @@ export const BountiesHistoryList: React.FC<BountiesHistoryListProps> = ({ bounti
             <table className={styles.table}>
               <tbody>
                 <tr>
-                  <td className={styles.label}>Creador</td>
+                  <td className={styles.label}>Creator</td>
                   <td>{bounty.creator.slice(0, 6)}...{bounty.creator.slice(-4)}</td>
                 </tr>
                 <tr>
@@ -42,12 +42,12 @@ export const BountiesHistoryList: React.FC<BountiesHistoryListProps> = ({ bounti
                   <td>{bounty.freelancer.slice(0, 6)}...{bounty.freelancer.slice(-4)}</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Cantidad</td>
+                  <td className={styles.label}>Amount</td>
                   <td>{bounty.amount} ETH</td>
                 </tr>
                 <tr>
-                  <td className={styles.label}>Fecha de finalización</td>
-                  <td>{bounty.completedDate.toLocaleDateString()}</td>
+                  <td className={styles.label}>Deadline</td>
+                  <td>{bounty.completedDate}</td>
                 </tr>
               </tbody>
             </table>
