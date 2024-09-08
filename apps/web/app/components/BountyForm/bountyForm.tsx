@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './bountyForm.module.css';
 import { ethers } from 'ethers';
 import { EscrowAddress, EscrowABI } from '../../contracts/Escrow';
@@ -30,24 +30,6 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
 
-  // TODO: replace this with the actual wallet connection logic
-  const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        setSigner(signer);        
-        setIsConnected(true);
-      } catch (error) {
-        console.error('Failed to connect wallet:', error);
-      }
-    } else {
-      console.error('Metamask is not installed');
-    }
-  };
-
-  // TODO: add the integration with the data base here.
   const createBounty = async () => {
     if (!signer) {
       console.error('Wallet not connected');
@@ -95,11 +77,6 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
     <div className={styles.formContainer}>
       <div className={styles.formWrapper}>
         <h2 className={styles.formTitle}>Create a New Bounty</h2>
-        {!isConnected && (
-          <button type="button" onClick={connectWallet} className={styles.connectButton}>
-            Connect Wallet
-          </button>
-        )}
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
             <label className={styles.label}>

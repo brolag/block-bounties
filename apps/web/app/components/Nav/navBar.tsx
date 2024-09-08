@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import AuthButton from '../AuthButton/page';
+import AuthButton from '../AuthButton';
 import styles from './navbar.module.css';
 
 export const Navbar: React.FC = () => {
