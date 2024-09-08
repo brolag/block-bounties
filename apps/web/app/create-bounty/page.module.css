@@ -1,7 +1,7 @@
 .main{
     background-color: #ffff;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 10rem;
 }

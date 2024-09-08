@@ -1,39 +1,64 @@
 .navbar {
-    background-color: transparent;
-  }
-  
-  .container {
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 4rem;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffff;
-    text-decoration: none;
-  }
-  
-  .button {
-    background-color: transparent;
-    color: white;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    text-decoration: none;
-    transition: background-color 0.2s;
-  }
-  
-  .button:hover {
-    background-color: #0e2b69;
-  }
+  background-color: white;
+  height: var(--navbar-height);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(10, 13, 64, 0.1);
+}
+
+.container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0A0D40;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.logo:hover {
+  color: #4a4f8f;
+}
+
+.button {
+  background-color: transparent;
+  color: #0A0D40;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button:hover {
+  background-color: #f0f2ff;
+  color: #4a4f8f;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.address {
+  margin-right: 10px;
+  font-size: 0.9em;
+  color: #666;
+}
