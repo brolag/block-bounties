@@ -1,7 +1,9 @@
 
 :root {
-  --background: #0A0D40;
+  --background: #ffff;
   --foreground: #171717;
+  --navbar-height: 6rem;
+  --sidebar-width: 16rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,10 +15,8 @@
 
 html,
 body {
-  height: 100%;
   margin: 0;
-  display: flex;
-  flex-direction: column;
+  padding: 0;
 }
 
 body {
@@ -26,17 +26,28 @@ body {
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
-.layout-container {
+.layout {
   display: flex;
-  min-height: calc(100vh - 4rem); /* Ajusta esto según la altura de tu Navbar */
+  min-height: 100vh;
+  padding-top: var(--navbar-height);
 }
 
-.main-content {
-  flex-grow: 1;
+.content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 2rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+  width: calc(100% - var(--sidebar-width));
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+.main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
 }
 
 

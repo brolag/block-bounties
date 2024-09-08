@@ -1,0 +1,98 @@
+.main {
+  width: 100%;
+  height: 100%;
+  margin-top: 10rem;
+  margin-left: 25rem;
+}
+
+.grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    background-color: white;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(10, 13, 64, 0.1), 0 1px 3px rgba(10, 13, 64, 0.08);
+    border: 1px solid rgba(10, 13, 64, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .cardHeader {
+    background-color: #f7fafc;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cardTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .badgeInProgress {
+    background-color: #4299e1;
+    color: white;
+  }
+  
+  .badgePending {
+    background-color: #ed8936;
+    color: white;
+  }
+  
+  .badgeCompleted {
+    background-color: #48bb78;
+    color: white;
+  }
+  
+  .badgeDefault {
+    background-color: #a0aec0;
+    color: white;
+  }
+  
+  .cardContent {
+    padding: 1rem;
+  }
+  
+  .description {
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table td {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .label {
+    font-weight: 600;
+    padding-right: 1rem;
+  }
+
+  .main{
+    background-color: #48bb78;
+  }

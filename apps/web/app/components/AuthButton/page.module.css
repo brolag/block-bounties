@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .loginButton {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .loginButton:hover {
+    background-color: #2563eb;
+  }
+  
+  .connectedText {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+  }
+  
+  .logoutButton {
+    background-color: #ef4444;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    margin-top: 0.5rem;
+  }
+  
+  .logoutButton:hover {
+    background-color: #dc2626;
+  }
