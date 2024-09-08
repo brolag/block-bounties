@@ -5,9 +5,8 @@ import { Web3Auth } from "@web3auth/modal"
 import { CHAIN_NAMESPACES } from "@web3auth/base"
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider"
 import { ethers } from "ethers"
-import { BountyForm } from '../components/BountyForm/bountyForm'
-import styles from './page.module.css'
-import { EscrowAddress, EscrowABI } from '../contracts/Escrow'
+import { BountyForm } from '../../components/BountyForm/bountyForm'
+import { EscrowAddress, EscrowABI } from '../../contracts/Escrow'
 
 const clientId = "BOgvX3VW76C4HUpjlCkJo59IoddKxgRPyoCa7OJycF5Jy4nul71ODv_c5uGz24UePY8eVu7GNj0W5iLjF50FvEk"
 
@@ -88,8 +87,11 @@ export default function Dashboard() {
   }
 
   return (
-    <main className={styles.main}>
-      <BountyForm onSubmit={handleBountySubmit} />
+    <main className="min-h-screen bg-gradient-to-br from-[#0F1B42] via-[#2A5ACF] to-[#587DFF] flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-[#0F1B42]">Create a Bounty</h1>
+        <BountyForm onSubmit={handleBountySubmit} />
+      </div>
     </main>
   )
 }

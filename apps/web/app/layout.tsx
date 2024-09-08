@@ -3,6 +3,7 @@ import { Navbar } from "./components/Nav/navBar";
 import ClientLayout from "./components/clientLayout";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Web3AuthProvider } from './contexts/Web3AuthContext';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en">
       <body>
-        {/* <Navbar /> */}
-        <ClientLayout>
+        <Web3AuthProvider>
           {children}
-        </ClientLayout>
+        </Web3AuthProvider>
       </body>
     </html>
   );
