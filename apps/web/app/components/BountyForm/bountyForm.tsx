@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { EscrowAddress, EscrowABI } from '../../contracts/Escrow';
 
 interface BountyData {
+  bountyId: number;
   bountyName: string;
   description: string;
   freelancer: string;
@@ -17,6 +18,7 @@ interface BountyFormProps {
 
 export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
   const [bountyData, setBountyData] = useState<BountyData>({
+    bountyId: 0,
     bountyName: '',
     description: '',
     freelancer: '',
@@ -56,6 +58,14 @@ export const BountyForm: React.FC<BountyFormProps> = ({ onSubmit }) => {
       
       const tx = await escrowContract.createBounty({ value: amountInWei });
       await tx.wait();
+      const nextBountyId = await escrowContract.nextBountyId();
+      const bountyIdAsNumber = Number(nextBountyId) - 1;
+      localStorage.setItem('bountyId', bountyIdAsNumber.toString());
+      setBountyData(prevData => ({
+        ...prevData,
+        bountyId: bountyIdAsNumber
+      }));
+
       console.log('Bounty created successfully');
     } catch (error) {
       console.error('Error creating bounty:', error);

@@ -11,7 +11,7 @@ const provider = getDefaultProvider(rpcUrl);
 const signer = wallet.connect(provider);
 const db = new Database({ signer });
 
-const tableName = "BountyTest2_84532_62";
+const tableName = "BountyTest4_84532_64";
 
 //select the last id
 async function selectId(){
@@ -26,6 +26,7 @@ async function selectId(){
 
 //insert a new Bounty in tableland
 async function insertBounty(
+    bountyId,                       // The id generated in the smart contract
     bountyName,                     // The name of the bounty
     description,                    // Description of the bounty
     amount,                         // The amount of the bounty
@@ -40,11 +41,12 @@ async function insertBounty(
     completionAttestationId = null  // Optional: Attestation ID for completion, defaulting to null
   ) {
     
-    const query = `INSERT INTO ${tableName} (bountyName, description, amount, creator, freelancer, status, deadline, completedAt, escrowAddress, createdAt, creationAttestationId, completionAttestationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO ${tableName} (bountyId, bountyName, description, amount, creator, freelancer, status, deadline, completedAt, escrowAddress, createdAt, creationAttestationId, completionAttestationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
   
     const result = await db
       .prepare(query)
       .bind(
+        bountyId,
         bountyName,               
         description,              
         amount,                   
