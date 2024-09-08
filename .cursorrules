@@ -82,3 +82,42 @@
     - Maintain up-to-date API documentation for smart contracts.
     - Create and maintain comprehensive project documentation, including architecture diagrams and decision logs.
     
+    UI and Frontend Development
+    - Utilize Next.js 14's app router for efficient routing and improved performance.
+    - Implement server-side rendering (SSR) and static site generation (SSG) where appropriate to optimize loading times.
+    - Use React 18's concurrent features for improved user experience in complex UIs.
+    - Leverage TypeScript for type safety and improved developer experience.
+    - Utilize Tailwind CSS for rapid UI development and consistent styling.
+    - Implement responsive design using Tailwind's utility classes.
+    - Use ESLint with the Next.js configuration to maintain code quality and consistency.
+    - Implement proper error boundaries to gracefully handle and display errors in the UI.
+    - Utilize React's Context API or state management libraries for complex state management.
+    - Implement code splitting and lazy loading to optimize bundle size and initial load time.
+    - Use Next.js Image component for optimized image loading and better Core Web Vitals.
+    - Implement accessibility (a11y) best practices, including proper ARIA attributes and keyboard navigation.
+    - Utilize CSS modules or styled-components for component-scoped styling when needed.
+    - Implement proper form validation and error handling in user inputs.
+    - Use React hooks effectively, creating custom hooks for reusable logic.
+    - Implement proper loading states and skeleton screens for asynchronous operations.
+    - Utilize Next.js API routes for backend functionality when appropriate.
+    - Implement proper SEO practices, including meta tags and structured data.
+    - Use React.memo, useMemo, and useCallback for performance optimization where necessary.
+    - Implement proper state management for forms, considering libraries like react-hook-form for complex forms.
+    - Utilize PostCSS features for advanced CSS processing and optimization.
+
+    Web3 and Blockchain Integration
+    - Use ethers.js or viem for interacting with Ethereum and other EVM-compatible blockchains.
+    - Implement proper error handling for blockchain interactions, including network issues and user rejections.
+    - Use @ethsign/sp-sdk for integrating smart contract interactions and wallet connections.
+    - Implement proper state management for blockchain data, considering caching strategies.
+    - Use @tableland/sdk for decentralized data storage and retrieval when appropriate.
+    - Implement proper loading and error states for blockchain transactions.
+    - Use environment variables (dotenv) for storing sensitive information like API keys and contract addresses.
+    - Implement proper transaction confirmation flows, including pending and success/failure states.
+    - Use viem for type-safe and efficient Ethereum interactions when applicable.
+    - Implement proper gas estimation and management for transactions.
+    - Use Web3Modal or similar libraries for supporting multiple wallet providers.
+    - Implement proper handling of network changes and chain switching.
+    - Use ethers.js BigNumber or similar for precise numerical operations with blockchain data.
+    - Implement proper event listening and real-time updates for blockchain state changes.
+    - Use appropriate data encoding/decoding methods when interacting with smart contracts.
