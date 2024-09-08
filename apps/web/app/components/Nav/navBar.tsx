@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import AuthButton from '../AuthButton/page';
 import styles from './navbar.module.css';
 
 export const Navbar: React.FC = () => {
@@ -12,11 +13,7 @@ export const Navbar: React.FC = () => {
               BlockBounties
             </Link>
           </div>
-          <div>
-            <Link href="/create-bounty" className={styles.button}>
-              Login
-            </Link>
-          </div>
+          <AuthButton />
         </div>
       </div>
     </nav>

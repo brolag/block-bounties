@@ -5,6 +5,7 @@ import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
 import { Escrow } from "./Escrow.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import "forge-std/console.sol";
 
 contract CompletionHook is ISPHook {
     Escrow public escrow;
@@ -13,18 +14,21 @@ contract CompletionHook is ISPHook {
         escrow = Escrow(_escrow);
     }
 
-
     function didReceiveAttestation(
         address,
-        uint64 schemaId,
         uint64,
-        bytes calldata
+        uint64,
+        bytes calldata extraData
     )
         external
         payable
         override
     {
-        escrow.completeBounty(uint64(schemaId));
+        uint256 bountyId;
+        assembly {
+            bountyId := calldataload(add(extraData.offset, 64))
+        }
+        escrow.completeBounty(uint64(bountyId));
     }
 
     function didReceiveAttestation(

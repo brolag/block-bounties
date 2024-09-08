@@ -1,0 +1,57 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.button {
+  background-color: #0A0D40;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 6px rgba(10, 13, 64, 0.1);
+}
+
+.button:hover {
+  background-color: #131958;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(10, 13, 64, 0.2);
+}
+
+.button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(10, 13, 64, 0.1);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.address {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-right: 1rem;
+  font-weight: 500;
+}
+
+.logoutButton {
+  background-color: #4463ef;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.logoutButton:hover {
+  background-color: #141eb4;
+}
