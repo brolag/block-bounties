@@ -41,7 +41,7 @@ export default function BountiesHistoryPage() {
   }, []);
 
   return (
-    <div className={styles.main}>
+    <div >
       <BountiesHistoryList bounties={completedBounties || []} />
     </div>
   );
