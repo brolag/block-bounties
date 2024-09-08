@@ -4,7 +4,7 @@ pragma solidity ^0.8.26;
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { IERC20 } from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import { ISPHook } from "@ethsign/sign-protocol-evm/src/interfaces/ISPHook.sol";
-
+import { console } from "forge-std/console.sol";
 contract Escrow is Ownable {
     struct Bounty {
         address funder;
@@ -44,6 +44,7 @@ contract Escrow is Ownable {
 
     function commitToBounty(uint64 _bountyId, address _beneficiary) public  {
         Bounty storage bounty = bounties[_bountyId];
+
         require(bounty.isFunded, "Bounty is not funded");
         require(!bounty.isCommitted, "Bounty is already committed");
 
