@@ -1,35 +1,46 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
-import { IWeb3AuthModal } from "@web3auth/modal";
+import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { ethers } from "ethers";
-import styles from './AuthButton.module.css';
+import styles from './page.module.css';
 
-const clientId = "YOUR_WEB3AUTH_CLIENT_ID"; // Replace with your Web3Auth client ID
+const clientId = "BOgvX3VW76C4HUpjlCkJo59IoddKxgRPyoCa7OJycF5Jy4nul71ODv_c5uGz24UePY8eVu7GNj0W5iLjF50FvEk"; // Reemplaza con tu Client ID de Web3Auth
 
 const AuthButton: React.FC = () => {
-  const [web3auth, setWeb3auth] = useState<IWeb3AuthModal | null>(null);
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
   const [address, setAddress] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     const init = async () => {
       try {
         const chainConfig = {
           chainNamespace: CHAIN_NAMESPACES.EIP155,
-          chainId: "0x1", // mainnet
-          rpcTarget: "https://mainnet.infura.io/v3/YOUR_INFURA_ID", // Replace with your Infura ID or another Ethereum RPC URL
+          chainId: "0xaa36a7", // Goerli testnet
+          rpcTarget: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
         };
 
         const web3auth = new Web3Auth({
           clientId,
-          web3AuthNetwork: "testnet", // Use "mainnet" for production
+          web3AuthNetwork: "testnet",
           chainConfig,
           privateKeyProvider: new EthereumPrivateKeyProvider({ config: { chainConfig } }),
         });
 
-        setWeb3auth(web3auth);
+        const metamaskAdapter = new MetamaskAdapter({
+          clientId,
+          sessionTime: 3600, // 1 hour in seconds
+          web3AuthNetwork: "testnet",
+          chainConfig,
+        });
 
+        web3auth.configureAdapter(metamaskAdapter);
+        setWeb3auth(web3auth);
         await web3auth.initModal();
       } catch (error) {
         console.error(error);
@@ -50,6 +61,7 @@ const AuthButton: React.FC = () => {
       const signer = await ethersProvider.getSigner();
       const address = await signer.getAddress();
       setAddress(address);
+      router.push('/create-bounty');
     }
   };
 
@@ -60,18 +72,21 @@ const AuthButton: React.FC = () => {
     }
     await web3auth.logout();
     setAddress("");
+    router.push('/');
   };
 
   return (
     <div className={styles.container}>
       {!address ? (
-        <button onClick={login} className={styles.loginButton}>
-          Login with Web3Auth
+        <button onClick={login} className={styles.button}>
+          Login with MetaMask
         </button>
       ) : (
-        <div>
-          <p className={styles.connectedText}>Connected: {address}</p>
-          <button onClick={logout} className={styles.logoutButton}>
+        <div className={styles.userInfo}>
+          <span className={styles.address}>
+            {address.slice(0, 6)}...{address.slice(-4)}
+          </span>
+          <button onClick={logout} className={`${styles.button} ${styles.logoutButton}`}>
             Logout
           </button>
         </div>
