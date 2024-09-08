@@ -41,8 +41,8 @@ export default function BountiesAssignedPage() {
   }, []);
 
   return (
-    <div className={styles.main}>
+    <main>
       <BountiesAssignedList bounties={assignedBounties || []} />
-    </div>
+    </main>
   );
 }
