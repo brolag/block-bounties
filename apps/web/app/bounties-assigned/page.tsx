@@ -1,4 +1,5 @@
 export default function BountiesAssigned() {
+
     return (
       <div>
         <h1>Bounties Assigned</h1>

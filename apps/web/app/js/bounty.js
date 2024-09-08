@@ -2,31 +2,30 @@ const { selectId, insertBounty, updateAttestationId, selectBountyFreelancer, sel
 const { createCommitmentAttestation, createFinalizationAttestation } = require('./signProtocol');
 
 //creation of the bounty and the attestation commitment
-async function create_Bounty(    
+async function create_Bounty(  
+    bountyId  ,                     // The id generated in the smart contract
     bountyName,                     // The name of the bounty
     description,                    // Description of the bounty
     amount,                         // The amount of the bounty
-    attestor,                       // The creator/attestor of the bounty
+    attestor = "0x1F658AF12F5a0D72e4652f53399e556B9dB23904",                       // The creator/attestor of the bounty
     freelancer,                     // The freelancer assigned to the bounty
-    deadline,                       // The deadline for the bounty
-    completedAt = null,             // Optional: When the bounty was completed, defaulting to null
-    escrowAddress,                  // The address of the escrow
-    createdAt = new Date(),         // The creation date, defaulting to the current date
-    creationAttestationId = null,   // Attestation ID for creation
-    completionAttestationId = null  // Optional: Attestation ID for completion, defaulting to null
+    deadline                       // The deadline for the bounty
   ) {
 
-    //insert the bounty in tableland
-    const resultInsert = await insertBounty(bountyName, description, amount, attestor, freelancer, "In progress", deadline, completedAt, escrowAddress, createdAt, creationAttestationId, completionAttestationId);
-    //console.log(resultInsert);
+    const escrowAddress = "";
+    const date = new Date(deadline);
+    const deadlineTimestamp = date.getTime();
+    const createdAt = new Date().getTime();
 
-    //get the bounty id
-    const result = await selectId();
-    const bountyId = result[0].bountyId;
+    //insert the bounty in tableland
+    console.log(bountyId, bountyName, description, amount, attestor, freelancer, "In progress", deadlineTimestamp, null, escrowAddress, new Date(), 0, 0)
+    const resultInsert = await insertBounty(bountyId, bountyName, description, amount, attestor, freelancer, "In progress", deadlineTimestamp, null, escrowAddress, new Date(), 0, 0);
 
     //create the attestation with sign protocol
-    const resultCommitment = await createCommitmentAttestation(attestor, createdAt, bountyId, bountyName, description, freelancer, deadline)
+    console.log(attestor, createdAt, bountyId, bountyName, description, freelancer, deadlineTimestamp);
+    const resultCommitment = await createCommitmentAttestation(attestor, createdAt, bountyId, bountyName, description, freelancer, deadlineTimestamp)
     const attestationId = resultCommitment.attestationId;
+    console.log(attestationId);
 
     //update the attestation id in tableland
     updateAttestationId(bountyId, attestationId);
@@ -64,3 +63,10 @@ async function finalizeBounty(bountyId, attestor, freelancer){
     acceptBounty(bountyId, "Completed", timestamp, attestationId);
 
 }
+
+module.exports = {
+  create_Bounty,
+  selectAllBountyFreelancer,
+  selectAllBountyBusiness,
+  finalizeBounty
+};
