@@ -87,9 +87,11 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary-dark via-secondary-blue to-accent-blue flex items-center justify-center p-4 sm:p-8">
-            <BountyForm onSubmit={handleBountySubmit} />
-
+    <main className="min-h-screen bg-gradient-to-br from-primary-dark via-secondary-blue to-accent-blue p-4 sm:p-8">
+      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Create a New Bounty</h1>
+        <BountyForm onSubmit={handleBountySubmit} />
+      </div>
     </main>
   )
 }

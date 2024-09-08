@@ -41,8 +41,9 @@ export default function BountiesCreatedPage() {
   }, []);
 
   return (
-    <div className={styles.main}>
-      <BountiesCreatedList bounties={bounties || []} />
-    </div>
+    <main>
+        <BountiesCreatedList />
+
+    </main>
   );
 }
